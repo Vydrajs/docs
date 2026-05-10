@@ -13,6 +13,7 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import SlAlert from "@shoelace-style/shoelace/dist/components/alert/alert.component.js";
 import SlIcon from "@shoelace-style/shoelace/dist/components/icon/icon.component.js";
 import SlCopyButton from "@shoelace-style/shoelace/dist/components/copy-button/copy-button.component.js";
+import { appConfig } from "../../config/app.config";
 
 export class GuidePage extends I18nMixin(ScopedElementsMixin(LitElement)) {
   static styles = guidePageStyle;
@@ -141,7 +142,9 @@ export class GuidePage extends I18nMixin(ScopedElementsMixin(LitElement)) {
   }
 
   private async loadGuide(guideName: string) {
-    const file = await fetch(`/docs/${guideName.replace("_", "/")}.md`);
+    const file = await fetch(
+      appConfig.basePath + `/docs/${guideName.replace("_", "/")}.md`,
+    );
 
     const markdown = await file.text();
     if (!this.hasInit) {
