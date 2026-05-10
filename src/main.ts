@@ -8,7 +8,9 @@ import { i18n } from "@vydra-js/i18n";
 import { setBasePath } from "@shoelace-style/shoelace";
 import { appConfig } from "./app/config/app.config";
 
-setBasePath("/node_modules/@shoelace-style/shoelace/dist");
+setBasePath(
+  "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/dist/",
+);
 i18n.setBasePath(appConfig.localesPath);
 
 const rootService = Inject(RootService);

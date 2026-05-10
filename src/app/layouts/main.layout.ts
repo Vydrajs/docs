@@ -13,6 +13,7 @@ import SlMenuItem from "@shoelace-style/shoelace/dist/components/menu-item/menu-
 import SlMenuLabel from "@shoelace-style/shoelace/dist/components/menu-label/menu-label.component.js";
 import SlDrawer from "@shoelace-style/shoelace/dist/components/drawer/drawer.component.js";
 import SlDivider from "@shoelace-style/shoelace/dist/components/divider/divider.component.js";
+import { appConfig } from "../config/app.config";
 
 export class MainLayout extends I18nMixin(ScopedElementsMixin(LitElement)) {
   static scopedElements = {
@@ -350,12 +351,13 @@ export class MainLayout extends I18nMixin(ScopedElementsMixin(LitElement)) {
   }
 
   render() {
+    const basePath = appConfig.basePath;
     return html`
       <nav class="navbar">
         <div class="navbar-logo-container">
           <img
             @click="${this._goToHome}"
-            src="/assets/img/vydra.png"
+            src="${basePath}/assets/img/vydra.png"
             alt="Logo"
             width="30"
             height="30"
@@ -363,7 +365,7 @@ export class MainLayout extends I18nMixin(ScopedElementsMixin(LitElement)) {
 
           <img
             @click="${this._goToHome}"
-            src="/assets/img/vydra-name.png"
+            src="${basePath}/assets/img/vydra-name.png"
             alt="Logo"
             height="30"
             class="desktop-only"
@@ -524,13 +526,17 @@ export class MainLayout extends I18nMixin(ScopedElementsMixin(LitElement)) {
             <div class="footer-brand">
               <div class="footer-brand-top">
                 <img
-                  src="/assets/img/vydra.png"
+                  src="${basePath}/assets/img/vydra.png"
                   alt="Vydra Logo"
                   width="36"
                   height="36"
                 />
 
-                <img src="/assets/img/vydra-name.png" alt="Vydra" height="28" />
+                <img
+                  src="${basePath}/assets/img/vydra-name.png"
+                  alt="Vydra"
+                  height="28"
+                />
               </div>
 
               <p class="footer-description">
