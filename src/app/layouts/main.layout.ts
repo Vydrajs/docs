@@ -343,11 +343,11 @@ export class MainLayout extends I18nMixin(ScopedElementsMixin(LitElement)) {
   `;
 
   private _goToGuide(name: string) {
-    this.navigationService.navigate(`/guide/${name}`);
+    this.navigationService.navigate(appConfig.basePath + `/guide/${name}`);
   }
 
   private _goToHome() {
-    this.navigationService.navigate("/");
+    this.navigationService.navigate(appConfig.basePath);
   }
 
   render() {
