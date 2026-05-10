@@ -1,0 +1,20 @@
+{
+  "vydra-cli": "0.0.1",
+  "version": "0.0.1",
+  "project": {
+    "name": "docs-app",
+    "prefix": "vydra",
+    "type": "app",
+    "schematics": {
+      "page": {
+        "styles": true,
+        "test": true
+      },
+      "component": {
+        "styles": true,
+        "test": true
+      }
+    }
+  },
+  "cli": {}
+}

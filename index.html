@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" class="sl-theme-dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>docs-app | Vydra App</title>
+  <link rel="stylesheet" href="/node_modules/@shoelace-style/shoelace/dist/themes/light.css" />
+  <link rel="stylesheet" href="/node_modules/@shoelace-style/shoelace/dist/themes/dark.css" />
+
+  <style>
+    /* =========================================================
+   * LIGHT THEME
+   * ======================================================= */
+
+    :root,
+    :host,
+    .sl-theme-light {
+      color-scheme: light;
+
+      /* --- PRIMARY: Violeta Eléctrico Vydra --- */
+      --sl-color-primary-50: #f5f3ff;
+      --sl-color-primary-100: #ede9fe;
+      --sl-color-primary-200: #ddd6fe;
+      --sl-color-primary-300: #c4b5fd;
+      --sl-color-primary-400: #a78bfa;
+      --sl-color-primary-500: #7b61ff;
+      --sl-color-primary-600: #6540f5;
+      --sl-color-primary-700: #552bd0;
+      --sl-color-primary-800: #4625aa;
+      --sl-color-primary-900: #3a208a;
+      --sl-color-primary-950: #23125e;
+
+      /* --- NEUTRALS --- */
+      --sl-color-neutral-50: #f8fafc;
+      --sl-color-neutral-100: #f1f5f9;
+      --sl-color-neutral-200: #e2e8f0;
+      --sl-color-neutral-300: #cbd5e1;
+      --sl-color-neutral-400: #94a3b8;
+      --sl-color-neutral-500: #64748b;
+      --sl-color-neutral-600: #475569;
+      --sl-color-neutral-700: #334155;
+      --sl-color-neutral-800: #1e293b;
+      --sl-color-neutral-900: #0f172a;
+      --sl-color-neutral-950: #020617;
+
+      /* --- SURFACES --- */
+      --sl-color-background: #ffffff;
+      --sl-color-surface: #ffffff;
+      --sl-color-surface-raised: #f8fafc;
+
+      --sl-color-text: var(--sl-color-neutral-900);
+      --sl-color-text-muted: var(--sl-color-neutral-600);
+
+      --sl-color-border: rgba(15, 23, 42, 0.08);
+
+      /* --- DESIGN TOKENS --- */
+      --sl-border-radius-small: 0.375rem;
+      --sl-border-radius-medium: 0.75rem;
+      --sl-border-radius-large: 1rem;
+
+      --sl-shadow-x-small:
+        0 1px 2px rgba(15, 23, 42, 0.04);
+
+      --sl-shadow-small:
+        0 4px 12px rgba(15, 23, 42, 0.06);
+
+      --sl-shadow-medium:
+        0 10px 30px rgba(15, 23, 42, 0.08);
+
+      --sl-input-height-medium: 2.75rem;
+
+      --sl-font-sans:
+        "Inter",
+        system-ui,
+        -apple-system,
+        sans-serif;
+    }
+
+    /* =========================================================
+   * DARK THEME
+   * ======================================================= */
+
+    .sl-theme-dark {
+      color-scheme: dark;
+
+      /* --- PRIMARY --- */
+      --sl-color-primary-50: #140b33;
+      --sl-color-primary-100: #1f1450;
+      --sl-color-primary-200: #2e1d78;
+      --sl-color-primary-300: #4328a8;
+      --sl-color-primary-400: #5d3de0;
+      --sl-color-primary-500: #7b61ff;
+      --sl-color-primary-600: #9d7aff;
+      --sl-color-primary-700: #bea8ff;
+      --sl-color-primary-800: #ddd2ff;
+      --sl-color-primary-900: #f0ebff;
+      --sl-color-primary-950: #faf8ff;
+
+      /* --- NEUTRALS (MUCHO MÁS OSCUROS) --- */
+      --sl-color-neutral-50: #000000;
+      --sl-color-neutral-100: #030712;
+      --sl-color-neutral-200: #060b16;
+      --sl-color-neutral-300: #0b1220;
+      --sl-color-neutral-400: #111827;
+      --sl-color-neutral-500: #1f2937;
+      --sl-color-neutral-600: #334155;
+      --sl-color-neutral-700: #64748b;
+      --sl-color-neutral-800: #94a3b8;
+      --sl-color-neutral-900: #e2e8f0;
+      --sl-color-neutral-950: #f8fafc;
+
+      /* --- SURFACES --- */
+      --sl-color-background: #020617;
+      --sl-color-surface: #0b1120;
+      --sl-color-surface-raised: #111827;
+
+      --sl-color-text: #f8fafc;
+      --sl-color-text-muted: #94a3b8;
+
+      --sl-color-border: rgba(255, 255, 255, 0.06);
+
+      /* --- DESIGN TOKENS --- */
+      --sl-border-radius-small: 0.375rem;
+      --sl-border-radius-medium: 0.75rem;
+      --sl-border-radius-large: 1rem;
+
+      --sl-shadow-x-small:
+        0 1px 2px rgba(0, 0, 0, 0.5);
+
+      --sl-shadow-small:
+        0 8px 24px rgba(0, 0, 0, 0.45);
+
+      --sl-shadow-medium:
+        0 16px 40px rgba(0, 0, 0, 0.6);
+
+      --sl-input-height-medium: 2.75rem;
+
+      --sl-font-sans:
+        "Inter",
+        system-ui,
+        -apple-system,
+        sans-serif;
+    }
+
+    /* =========================================================
+   * GLOBAL
+   * ======================================================= */
+
+    body {
+      margin: 0;
+      background: var(--sl-color-background);
+      color: var(--sl-color-text);
+      font-family: var(--sl-font-sans);
+
+      transition:
+        background-color 180ms ease,
+        color 180ms ease;
+    }
+
+    /* =========================================================
+   * BUTTONS
+   * ======================================================= */
+
+    sl-button::part(base) {
+      font-weight: 600;
+      letter-spacing: 0.01em;
+
+      transition:
+        background-color 160ms ease,
+        border-color 160ms ease,
+        color 160ms ease,
+        box-shadow 160ms ease,
+        transform 160ms ease;
+    }
+
+    sl-button::part(base):hover {
+      transform: translateY(-1px);
+    }
+
+    sl-button[variant="primary"]::part(base) {
+      box-shadow:
+        0 0 0 1px rgba(123, 97, 255, 0.12),
+        0 10px 24px rgba(123, 97, 255, 0.24);
+    }
+
+    .sl-theme-dark sl-button[variant="primary"]::part(base) {
+      box-shadow:
+        0 0 0 1px rgba(123, 97, 255, 0.2),
+        0 12px 28px rgba(123, 97, 255, 0.35);
+    }
+
+    /* =========================================================
+   * CARDS
+   * ======================================================= */
+
+    sl-card::part(base) {
+      border-radius: var(--sl-border-radius-large);
+      border: 1px solid var(--sl-color-border);
+
+      background: var(--sl-color-surface);
+
+      box-shadow: var(--sl-shadow-small);
+
+      transition:
+        border-color 180ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    sl-card::part(base):hover {
+      transform: translateY(-2px);
+    }
+
+    .sl-theme-dark sl-card::part(base) {
+      background:
+        linear-gradient(180deg,
+          rgba(17, 24, 39, 0.96),
+          rgba(2, 6, 23, 1));
+
+      backdrop-filter: blur(12px);
+    }
+
+    /* =========================================================
+   * INPUTS
+   * ======================================================= */
+
+    sl-input::part(base),
+    sl-textarea::part(base),
+    sl-select::part(combobox) {
+      border-radius: var(--sl-border-radius-medium);
+
+      background: var(--sl-color-surface-raised);
+
+      border-color: var(--sl-color-border);
+
+      color: var(--sl-color-text);
+
+      transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        background-color 160ms ease;
+    }
+
+    sl-input::part(base):focus-within,
+    sl-textarea::part(base):focus-within,
+    sl-select::part(combobox):focus-within {
+      border-color: var(--sl-color-primary-500);
+
+      box-shadow:
+        0 0 0 3px rgba(123, 97, 255, 0.18);
+    }
+
+    /* =========================================================
+   * OPTIONAL BACKGROUND EFFECTS
+   * ======================================================= */
+
+    .sl-theme-light body {
+      background:
+        radial-gradient(circle at top,
+          rgba(123, 97, 255, 0.08),
+          transparent 35%),
+        var(--sl-color-background);
+    }
+
+    .sl-theme-dark body {
+      background:
+        radial-gradient(circle at top,
+          rgba(123, 97, 255, 0.1),
+          transparent 25%),
+        #020617;
+    }
+  </style>
+
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

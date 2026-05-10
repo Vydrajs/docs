@@ -1,0 +1,40 @@
+{
+  "name": "docs-app",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "vite --mode development",
+    "build:spa": "vite build --mode spa",
+    "build:mfe": "vite build --mode mfe",
+    "build": "vite build --mode production",
+    "preview": "vite preview --mode mfe"
+  },
+  "dependencies": {
+    "@lit/context": "^1.1.6",
+    "@open-wc/scoped-elements": "^3.0.6",
+    "@vydra-js/bus": "^0.0.1",
+    "@vydra-js/core": "^0.0.1",
+    "@vydra-js/forms": "^0.0.1",
+    "@vydra-js/i18n": "^0.0.1",
+    "@vydra-js/router": "^0.0.1",
+    "@webcomponents/scoped-custom-element-registry": "^0.0.10",
+    "github-slugger": "^2.0.0",
+    "lit": "^3.2.1",
+    "markdown-it": "^14.1.1",
+    "markdown-it-container": "^4.0.0",
+    "shiki": "^4.0.2"
+  },
+  "devDependencies": {
+    "@open-wc/testing": "^4.0.0",
+    "@shoelace-style/shoelace": "^2.20.1",
+    "@types/markdown-it": "^14.1.2",
+    "@types/markdown-it-container": "^4.0.0",
+    "@types/mocha": "^10.0.10",
+    "jsdom": "^27.0.1",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.9",
+    "vitepress": "^1.6.4",
+    "vitest": "^3.2.4"
+  }
+}
