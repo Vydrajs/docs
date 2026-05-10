@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
   const isMfe = mode === "mfe";
 
   return {
-    base: isMfe ? env.VITE_BASE_PATH || "/" : "/",
+    base: env.VITE_BASE_PATH || "/",
     build: {
       target: "esnext",
       ...(isMfe
