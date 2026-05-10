@@ -3,6 +3,7 @@ import MarkdownIt from "markdown-it";
 import container from "markdown-it-container";
 import GithubSlugger from "github-slugger";
 import { createHighlighter } from "shiki";
+import { appConfig } from "../config/app.config";
 
 @Injectable()
 export class MdService {
@@ -97,7 +98,7 @@ export class MdService {
       return `
       <sl-button
         variant="text"
-        href="${href}"
+        href="${appConfig.basePath}${href}"
         ${isExternal ? `target="_blank"` : ""}
       >
     `;
@@ -197,7 +198,9 @@ export class MdService {
         const pOpen = tokens[i + 1];
         const inline = tokens[i + 2];
         if (pOpen?.type === "paragraph_open" && inline?.type === "inline") {
-          const match = inline.content.match(/^\[!(TIP|NOTE|WARNING|CAUTION|IMPORTANT)\]/i);
+          const match = inline.content.match(
+            /^\[!(TIP|NOTE|WARNING|CAUTION|IMPORTANT)\]/i,
+          );
           if (match) {
             const type = match[1].toUpperCase();
             token.type = "vydra_alert_open";
@@ -207,7 +210,10 @@ export class MdService {
             // Remove the [!TYPE] text from the inline token
             inline.content = inline.content.replace(/^\[!.*?\]\s*/i, "");
             if (inline.children && inline.children.length > 0) {
-              inline.children[0].content = inline.children[0].content.replace(/^\[!.*?\]\s*/i, "");
+              inline.children[0].content = inline.children[0].content.replace(
+                /^\[!.*?\]\s*/i,
+                "",
+              );
             }
 
             // Find matching blockquote_close

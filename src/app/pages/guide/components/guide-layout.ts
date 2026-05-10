@@ -1,17 +1,35 @@
 import { html, LitElement, css } from "lit";
-import { property } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 import { ScopedElementsMixin } from "@open-wc/scoped-elements/lit-element.js";
+
 import SlIcon from "@shoelace-style/shoelace/dist/components/icon/icon.component.js";
 import SlButton from "@shoelace-style/shoelace/dist/components/button/button.component.js";
+import SlDrawer from "@shoelace-style/shoelace/dist/components/drawer/drawer.component.js";
+
+import { appConfig } from "../../../config/app.config";
 
 export class GuideLayout extends ScopedElementsMixin(LitElement) {
   static scopedElements = {
     "sl-icon": SlIcon,
     "sl-button": SlButton,
+    "sl-drawer": SlDrawer,
   };
 
   @property({ type: String, attribute: "active-page" })
   activePage = "introduction";
+
+  @property({ type: Object })
+  toc: {
+    level: number;
+    title: string;
+    slug: string;
+  }[] = [];
+
+  @state()
+  private mobileMenuOpen = false;
+
+  @state()
+  private tocOpen = false;
 
   get items() {
     return [
@@ -29,13 +47,6 @@ export class GuideLayout extends ScopedElementsMixin(LitElement) {
       },
     ];
   }
-
-  @property({ type: Object })
-  toc: {
-    level: number;
-    title: string;
-    slug: string;
-  }[] = [];
 
   private leftNav = [
     {
@@ -151,17 +162,38 @@ export class GuideLayout extends ScopedElementsMixin(LitElement) {
       display: none;
     }
 
-    @media (min-width: 1200px) {
-      aside {
-        display: block;
-      }
-    }
-
     .layout-container {
-      display: flex;
+      display: block;
       max-width: 1400px;
       margin: 0 auto;
-      padding: 0 2rem;
+      padding: 0 1rem;
+      box-sizing: border-box;
+    }
+
+    .mobile-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      height: 64px;
+      padding: 0 1rem;
+
+      background: var(--sl-color-neutral-0);
+      border-bottom: 1px solid var(--sl-color-neutral-200);
+    }
+
+    :host-context(.sl-theme-dark) .mobile-header {
+      background: var(--sl-color-neutral-200);
+      border-bottom-color: var(--sl-color-neutral-300);
+    }
+
+    .mobile-title {
+      font-size: 0.95rem;
+      font-weight: 700;
     }
 
     .sidebar {
@@ -277,30 +309,68 @@ export class GuideLayout extends ScopedElementsMixin(LitElement) {
     }
 
     .main-content {
-      flex: 1;
+      width: 100%;
+      max-width: 860px;
       min-width: 0;
+
+      margin: 0 auto;
+      padding: 1.5rem 0 4rem;
+
+      box-sizing: border-box;
     }
 
-    @media (min-width: 1200px) {
-      .main-content {
-        padding: 2rem 2rem 4rem 3rem;
-      }
+    .mobile-toc {
+      margin-bottom: 1.5rem;
+
+      border: 1px solid var(--sl-color-neutral-200);
+      border-radius: 0.75rem;
+
+      overflow: hidden;
+    }
+
+    :host-context(.sl-theme-dark) .mobile-toc {
+      border-color: var(--sl-color-neutral-300);
+    }
+
+    .mobile-toc-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      width: 100%;
+
+      padding: 0.9rem 1rem;
+
+      border: none;
+      background: transparent;
+
+      cursor: pointer;
+
+      font-size: 0.9rem;
+      font-weight: 600;
+
+      color: inherit;
+    }
+
+    .mobile-toc-content {
+      padding: 0 1rem 1rem;
+    }
+
+    .desktop-sidebar {
+      display: none;
     }
 
     .right-sidebar {
       width: 200px;
       padding: 2rem 0 2rem 1rem;
+
       position: sticky;
       top: 70px;
+
       height: calc(100vh - 70px);
       overflow-y: auto;
-      display: none;
-    }
 
-    @media (min-width: 1200px) {
-      .right-sidebar {
-        display: block;
-      }
+      display: none;
     }
 
     .right-sidebar-title {
@@ -332,58 +402,143 @@ export class GuideLayout extends ScopedElementsMixin(LitElement) {
     :host-context(.sl-theme-dark) .right-sidebar-link:hover {
       color: var(--sl-color-neutral-900);
     }
+
+    @media (min-width: 1200px) {
+      aside {
+        display: block;
+      }
+
+      .layout-container {
+        display: flex;
+        padding: 0 2rem;
+      }
+
+      .mobile-header,
+      .mobile-toc {
+        display: none;
+      }
+
+      .desktop-sidebar {
+        display: block;
+      }
+
+      .main-content {
+        flex: 1;
+        padding: 2rem 2rem 4rem 3rem;
+        margin: 0;
+      }
+
+      .right-sidebar {
+        display: block;
+      }
+    }
   `;
 
+  private renderSidebar() {
+    return html`
+      <nav class="sidebar" aria-label="Documentation navigation">
+        <ul class="sidebar-list">
+          ${this.leftNav.map(
+            (group) => html`
+              <li class="sidebar-group">
+                <div class="sidebar-group-header">${group.title}</div>
+
+                <ul class="sidebar-items">
+                  ${group.children.map(
+                    (item) => html`
+                      <li class="sidebar-item">
+                        <a
+                          href="${appConfig.basePath}/guide/${item.page}"
+                          class="sidebar-link ${this.activePage === item.page
+                            ? "active"
+                            : ""}"
+                          @click=${() => {
+                            this.mobileMenuOpen = false;
+                          }}
+                        >
+                          <span class="sidebar-link-text"> ${item.title} </span>
+
+                          ${this.activePage === item.page
+                            ? html`
+                                <span class="sidebar-active-indicator"></span>
+                              `
+                            : null}
+                        </a>
+                      </li>
+                    `,
+                  )}
+                </ul>
+              </li>
+            `,
+          )}
+        </ul>
+      </nav>
+    `;
+  }
+
   render() {
-    // change to ul li system
-    return html` <div class="layout-container">
-      <aside>
-        <nav class="sidebar" aria-label="Documentation navigation">
-          <ul class="sidebar-list">
-            ${this.leftNav.map(
-              (group) => html`
-                <li class="sidebar-group">
-                  <div class="sidebar-group-header">${group.title}</div>
+    return html`
+      <!-- MOBILE HEADER -->
+      <header class="mobile-header">
+        <sl-button
+          size="small"
+          circle
+          @click=${() => (this.mobileMenuOpen = true)}
+        >
+          <sl-icon name="list"></sl-icon>
+        </sl-button>
 
-                  <ul class="sidebar-items">
-                    ${group.children.map(
-                      (item) => html`
-                        <li class="sidebar-item">
-                          <a
-                            href="/guide/${item.page}"
-                            class="sidebar-link ${this.activePage === item.page
-                              ? "active"
-                              : ""}"
-                          >
-                            <span class="sidebar-link-text">
-                              ${item.title}
-                            </span>
+        <div class="mobile-title">Documentation</div>
+      </header>
 
-                            ${this.activePage === item.page
-                              ? html`
-                                  <span class="sidebar-active-indicator"></span>
-                                `
-                              : null}
-                          </a>
-                        </li>
-                      `,
-                    )}
-                  </ul>
-                </li>
-              `,
-            )}
-          </ul>
-        </nav>
-      </aside>
+      <!-- MOBILE DRAWER -->
+      <sl-drawer
+        label="Navigation"
+        placement="start"
+        .open=${this.mobileMenuOpen}
+        @sl-after-hide=${() => (this.mobileMenuOpen = false)}
+      >
+        ${this.renderSidebar()}
+      </sl-drawer>
 
-      <main class="main-content">
-        <slot></slot>
-      </main>
+      <div class="layout-container">
+        <!-- DESKTOP LEFT SIDEBAR -->
+        <aside class="desktop-sidebar">${this.renderSidebar()}</aside>
 
-      <aside class="right-sidebar">
-        <div class="right-sidebar-title">On this page</div>
-        <slot name="toc"></slot>
-      </aside>
-    </div>`;
+        <!-- MAIN -->
+        <main class="main-content">
+          <!-- MOBILE TOC -->
+          <div class="mobile-toc">
+            <button
+              class="mobile-toc-button"
+              @click=${() => (this.tocOpen = !this.tocOpen)}
+            >
+              <span>On this page</span>
+
+              <sl-icon
+                name=${this.tocOpen ? "chevron-up" : "chevron-down"}
+              ></sl-icon>
+            </button>
+
+            ${this.tocOpen
+              ? html`
+                  <div class="mobile-toc-content">
+                    <slot name="toc"></slot>
+                  </div>
+                `
+              : null}
+          </div>
+
+          <slot></slot>
+        </main>
+
+        <!-- DESKTOP RIGHT SIDEBAR -->
+        <aside class="right-sidebar">
+          <div class="right-sidebar-title">On this page</div>
+
+          <slot name="toc"></slot>
+        </aside>
+      </div>
+    `;
   }
 }

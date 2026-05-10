@@ -17,6 +17,7 @@ import SlMenuItem from "@shoelace-style/shoelace/dist/components/menu-item/menu-
 import SlDrawer from "@shoelace-style/shoelace/dist/components/drawer/drawer.component.js";
 import { MainLayout } from "../../layouts/main.layout";
 import { Inject, VydraNavigationService } from "@vydra-js/core";
+import { appConfig } from "../../config/app.config";
 
 export class HomePage extends I18nMixin(ScopedElementsMixin(LitElement)) {
   static styles = homePageStyle;
@@ -77,7 +78,9 @@ export class HomePage extends I18nMixin(ScopedElementsMixin(LitElement)) {
                   pill
                   class="hero-btn-primary"
                   @click="${() =>
-                    this.navigationService.navigate("/guide/quick-start")}"
+                    this.navigationService.navigate(
+                      appConfig.basePath + "/guide/quick-start",
+                    )}"
                 >
                   ${this.t("hero.documentation")}
                 </sl-button>

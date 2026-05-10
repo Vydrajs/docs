@@ -227,7 +227,10 @@ export class GuidePage extends I18nMixin(ScopedElementsMixin(LitElement)) {
           ${unsafeHTML(this.content)}<br />
           <sl-button
             variant="text"
-            href="https://github.com/Vydrajs/vydra/blob/main/README.md"
+            href="https://github.com/Vydrajs/docs/tree/main/public/docs/${this.params?.guideName.replace(
+              "_",
+              "/",
+            )}.md"
             target="_blank"
           >
             <sl-icon
